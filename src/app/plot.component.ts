@@ -3,8 +3,6 @@ import { Component, OnInit } from '@angular/core';
 import { DataService } from './data.service';
 import { PlotData, DataAxes, DataAxis, DataSeries } from './plot-data';
 
-
-
 // https://thenextweb.com/dd/2015/06/12/20-best-javascript-chart-libraries/
 // http://dygraphs.com/
 // https://dc-js.github.io/dc.js/
@@ -42,6 +40,7 @@ export class PlotComponent implements OnInit {
     //     (v1, j) => data.series[i].points[j].concat(data.series[i].points[j+1]).map(it => it*200)
     //   )
     // );
+
   }
 
 }
