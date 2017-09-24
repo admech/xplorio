@@ -11,6 +11,22 @@
   <!-- PLOTLY -->
   <script src="assets/plotly-latest.min.js"></script>
 
+<!--   <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+  </script>
+  <script type="text/javascript" async
+          src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_CHTML">
+  </script> -->
+  <script type="text/javascript">
+    window.MathJax = {
+      root: 'assets/mathjax',
+      config: 'TeX-AMS-MML_SVG.js',
+      extensions: ['Safe.js']
+    };
+  </script>
+  <script type="text/javascript" src="assets/mathjax/MathJax.js"></script>
+
+
 </head>
 <body>
   <app-root></app-root>
