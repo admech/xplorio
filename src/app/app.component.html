@@ -7,6 +7,8 @@
 	  </ul>
   </div>
   <plot></plot>
+  <h3>Line Chart</h3>
+  <app-line-chart *ngIf="lineChartData" [data]="lineChartData"></app-line-chart>
   <h3>Bar Chart</h3>
-  <app-chart *ngIf="chartData" [data]="chartData"></app-chart>
+  <app-bar-chart *ngIf="barChartData" [data]="barChartData"></app-bar-chart>
 </div>

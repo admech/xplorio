@@ -4,7 +4,8 @@ import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
 import { PlotComponent } from './plot.component';
 import { DataService } from './data.service';
-import { ChartComponent } from './chart/chart.component';
+import { BarChartComponent } from './bar-chart/bar-chart.component';
+import { LineChartComponent } from './line-chart/line-chart.component';
 
 @NgModule({
   imports: [
@@ -13,7 +14,8 @@ import { ChartComponent } from './chart/chart.component';
   declarations: [
     AppComponent
     , PlotComponent
-    , ChartComponent
+    , BarChartComponent
+    , LineChartComponent
   ],
   providers: [
     DataService

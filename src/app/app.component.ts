@@ -22,27 +22,61 @@ export class AppComponent implements OnInit {
 
   pts = [ SERIES[0][3], SERIES[1][3], SERIES[2][3], SERIES[3][3] ];
 
-  private chartData: Array<any>;
+  private barChartData: Array<any>;
+  private lineChartData: Array<any>;
 
   ngOnInit() {
     // give everything a chance to get loaded before starting the animation to reduce choppiness
     setTimeout(() => {
-      this.generateData();
+      this.generateLineData();
+      this.generateBarData();
 
       // change the data periodically
-      setInterval(() => this.generateData(), 10000);
+      // setInterval(() => this.generateData(), 10000);
     }, 1000);
   }
 
-  generateData() {
-    this.chartData = [];
-    for (let i = 0; i < (8 + Math.floor(Math.random() * 10)); i++) {
-      this.chartData.push([
-        `Index ${i}`,
+  generateLineData() {
+    this.lineChartData = [];
+    let n = (8 + Math.floor(Math.random() * 10));
+    console.log(n);
+    for (let i = 0; i < n; i++) {
+      this.lineChartData.push([
+        // `Index ${i}`,
+        i,
         Math.floor(Math.random() * 100)
       ]);
     }
-    console.log(this.chartData);
+    for (let i = 0; i < n; i++) {
+      this.lineChartData.push([
+        // `Index ${i}`,
+        n - i,
+        Math.floor(Math.random() * 100)
+      ]);
+    }
+    console.log(this.lineChartData);
+  }
+
+
+  generateBarData() {
+    this.barChartData = [];
+    let n = (8 + Math.floor(Math.random() * 10));
+    console.log(n);
+    for (let i = 0; i < n; i++) {
+      this.barChartData.push([
+        // `Index ${i}`,
+        i,
+        Math.floor(Math.random() * 100)
+      ]);
+    }
+    for (let i = 0; i < n; i++) {
+      this.barChartData.push([
+        // `Index ${i}`,
+        n - i,
+        Math.floor(Math.random() * 100)
+      ]);
+    }
+    console.log(this.barChartData);
   }
 
 }

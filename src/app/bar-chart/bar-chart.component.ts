@@ -5,13 +5,13 @@ import { Component, OnInit, OnChanges, ViewChild, ElementRef, Input, ViewEncapsu
 import * as d3 from 'd3';
 
 @Component({
-  selector: 'app-chart',
-  templateUrl: './chart.component.html',
-  styleUrls: ['./chart.component.css'],
+  selector: 'app-bar-chart',
+  templateUrl: './bar-chart.component.html',
+  styleUrls: ['./bar-chart.component.css'],
   encapsulation: ViewEncapsulation.None
 })
-export class ChartComponent implements OnInit, OnChanges {
-  @ViewChild('chart') private chartContainer: ElementRef;
+export class BarChartComponent implements OnInit, OnChanges {
+  @ViewChild('barChart') private chartContainer: ElementRef;
   @Input() private data: Array<any>;
   private margin: any = { top: 20, bottom: 20, left: 20, right: 20};
   private chart: any;
