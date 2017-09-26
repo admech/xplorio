@@ -4,14 +4,16 @@ import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
 import { PlotComponent } from './plot.component';
 import { DataService } from './data.service';
+import { ChartComponent } from './chart/chart.component';
 
 @NgModule({
+  imports: [
+    BrowserModule
+  ],
   declarations: [
     AppComponent
     , PlotComponent
-  ],
-  imports: [
-    BrowserModule
+    , ChartComponent
   ],
   providers: [
     DataService

@@ -3,7 +3,9 @@ import { Component, OnInit } from '@angular/core';
 import { DataService } from './data.service';
 import { PlotData, DataAxes, DataAxis, DataSeries } from './plot-data';
 
-
+// import "d3";
+// import "nvd3";
+declare var d3: any;
 
 // https://thenextweb.com/dd/2015/06/12/20-best-javascript-chart-libraries/
 // http://dygraphs.com/
@@ -42,6 +44,13 @@ export class PlotComponent implements OnInit {
     //     (v1, j) => data.series[i].points[j].concat(data.series[i].points[j+1]).map(it => it*200)
     //   )
     // );
+
+    this.initNvD3Chart();
+  }
+
+  initNvD3Chart() {
+
+ 
   }
 
 }
