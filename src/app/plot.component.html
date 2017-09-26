@@ -1,9 +1,15 @@
 <div>
   <h2>Plot of 1st and 2nd series</h2>
   <svg [attr.width]="width" [attr.height]="width">
-    <svg:g *ngFor="let line of lines">
-      <svg:line *ngFor="let segment of line.segments" [attr.x1]="segment[0]" [attr.y1]="segment[1]" [attr.x2]="segment[2]" [attr.y2]="segment[3]" style="stroke:rgba(255,0,0,0.5);" />
-    </svg:g>
+    <ng-template ngFor let-line [ngForOf]="lines">
+      <svg:line *ngFor="let segment of line.segments"
+                [attr.x1]="segment[0]" [attr.y1]="segment[1]"
+                [attr.x2]="segment[2]" [attr.y2]="segment[3]"
+                [attr.stroke]="line.color"
+                [attr.stroke-opacity]="0.5"
+                /> 
+                <!-- ' + line.rgb[0] + ',' line.rgb[1] + ',' line.rgb[2] + ' -->
+    </ng-template>
     <!-- <line *ngFor="let line of lines[1]" [attr.x1]="line[0]" [attr.y1]="line[1]" [attr.x2]="line[2]" [attr.y2]="line[3]" style="stroke:rgb(255,0,0);" /> -->
   </svg>
 </div>

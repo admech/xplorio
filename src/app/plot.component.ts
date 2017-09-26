@@ -32,8 +32,8 @@ export class PlotComponent implements OnInit {
     this.width = 200;
     this.height = 200;
     this.lines = [
-      new PlotLine([0,0,255], [[100, 100, 200, 0]]),
-      new PlotLine([0,0,255], [[100, 100, 200, 0]])
+      new PlotLine("blue", [[100, 100, 200, 0]]),
+      new PlotLine("red",  [[0, 0, 100, 100]])
     ];
     // this.lines = Array.from(
     //   {length: data.series.length },
@@ -48,7 +48,7 @@ export class PlotComponent implements OnInit {
 
 class PlotLine {
   constructor(
-    public rgb: number[],
+    public color: string,
     public segments: number[][]
   ) { }
 }
