@@ -29,31 +29,35 @@ export class AppComponent implements OnInit {
     // give everything a chance to get loaded before starting the animation to reduce choppiness
     setTimeout(() => {
       this.generateLineData();
-      this.generateBarData();
+      // this.generateBarData();
 
       // change the data periodically
-      setInterval(() => { this.generateLineData(); this.generateBarData(); }, 3000);
+      // setInterval(() => { 
+        // this.generateLineData(); 
+        // this.generateBarData(); 
+      // }, 3000);
     }, 1000);
   }
 
   generateLineData() {
-    this.lineChartData = [];
-    let n = (8 + Math.floor(Math.random() * 10));
-    console.log(n);
-    for (let i = 0; i < n; i++) {
-      this.lineChartData.push([
-        // `Index ${i}`,
-        i,
-        Math.floor(Math.random() * 20)
-      ]);
-    }
-    for (let i = 0; i < n; i++) {
-      this.lineChartData.push([
-        // `Index ${i}`,
-        n - i,
-        Math.floor(80 + Math.random() * 20)
-      ]);
-    }
+    // this.lineChartData = [];
+    // let n = (8 + Math.floor(Math.random() * 10));
+    // console.log(n);
+    // for (let i = 0; i < n; i++) {
+    //   this.lineChartData.push([
+    //     // `Index ${i}`,
+    //     i,
+    //     Math.floor(Math.random() * 20)
+    //   ]);
+    // }
+    // for (let i = 0; i < n; i++) {
+    //   this.lineChartData.push([
+    //     // `Index ${i}`,
+    //     n - i,
+    //     Math.floor(80 + Math.random() * 20)
+    //   ]);
+    // }
+    this.lineChartData = SERIES[0];
     console.log(this.lineChartData);
   }
 

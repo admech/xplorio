@@ -17,6 +17,7 @@ export class LineChartComponent implements OnInit, OnChanges {
   @Input() private data: Array<any>;
   private margin: any = {top: 20, right: 20, bottom: 30, left: 50};
   private chart: any;
+  private size: number;
   private width: number;
   private height: number;
   private xScale: ScaleLinear<number, number>;
@@ -43,19 +44,24 @@ export class LineChartComponent implements OnInit, OnChanges {
 
   createChart() {
     const element = this.chartContainer.nativeElement;
-    this.width = element.offsetWidth - this.margin.left - this.margin.right;
-    this.height = element.offsetHeight - this.margin.top - this.margin.bottom;
+    // let w = element.offsetWidth;
+    // let h = element.offsetHeight;
+    let w = 400;
+    let h = 400;
+    this.width = w - this.margin.left - this.margin.right;
+    this.height = h - this.margin.top - this.margin.bottom;
     const svg = d3.select(element).append('svg')
-      .attr('width', element.offsetWidth)
-      .attr('height', element.offsetHeight);
+      .attr('width', w)
+      .attr('height', h);
 
     this.chart = svg.append("g")
       .attr("transform", "translate(" + this.margin.left + "," + this.margin.top + ")");
 
+    this.size = Math.max(this.width, this.height);
     this.xScale = d3.scaleLinear()
-        .rangeRound([0, this.width]);
+        .rangeRound([0, this.size]);
     this.yScale = d3.scaleLinear()
-        .rangeRound([this.height, 0]);
+        .rangeRound([this.size, 0]);
     this.line = d3.line()
         .x(d => this.xScale(d[0]))
         .y(d => this.yScale(d[1]));
@@ -63,9 +69,7 @@ export class LineChartComponent implements OnInit, OnChanges {
     this.xAxis = this.chart.append("g")
         .attr("transform", "translate(0," + this.height + ")");
     this.xAxis
-        .call(d3.axisBottom(this.xScale))
-        .select(".domain")
-        .remove();
+        .call(d3.axisBottom(this.xScale));
 
     this.yAxis = this.chart.append("g")
         .call(d3.axisLeft(this.yScale));
@@ -80,8 +84,11 @@ export class LineChartComponent implements OnInit, OnChanges {
   }
 
   updateChart() {
-    this.xScale.domain(d3.extent(this.data, d => d[0]));
-    this.yScale.domain(d3.extent(this.data, d => d[1]));
+    let xExtent = d3.extent(this.data, d => d[0]);
+    let yExtent = d3.extent(this.data, d => d[1]);
+    let extent = [ Math.min(xExtent[0], yExtent[0]), Math.max(xExtent[1], yExtent[1]) ];
+    this.xScale.domain(extent);
+    this.yScale.domain(extent);
     this.xAxis.transition().call(d3.axisBottom(this.xScale));
     this.yAxis.transition().call(d3.axisLeft(this.yScale));
 
