@@ -1,14 +1,5 @@
 <div>
   <h1>Xplorio</h1>
-<!--   <div>
-  	<h2>List of pts</h2>
-	  <ul>
-	  	<li *ngFor="let pt of pts">{{pt}}</li>
-	  </ul>
-  </div>
-  <plot></plot> -->
   <h3>Line Chart</h3>
-  <app-line-chart *ngIf="lineChartData" [data]="lineChartData"></app-line-chart>
-  <!-- <h3>Bar Chart</h3> -->
-  <!-- <app-bar-chart *ngIf="barChartData" [data]="barChartData"></app-bar-chart> -->
+  <app-line-chart *ngIf="lineChartData" [data]="lineChartData" [axisExtents]="'equalAxes'"></app-line-chart>
 </div>

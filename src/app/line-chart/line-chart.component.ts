@@ -15,6 +15,7 @@ import { ScaleLinear, Line } from 'd3';
 export class LineChartComponent implements OnInit, OnChanges {
   @ViewChild('lineChart') private chartContainer: ElementRef;
   @Input() private data: Array<any>;
+  @Input() private axisExtents: string;
   private margin: any = {top: 20, right: 20, bottom: 30, left: 50};
   private chart: any;
   private size: number;
@@ -26,6 +27,23 @@ export class LineChartComponent implements OnInit, OnChanges {
   private colors: any;
   private xAxis: any;
   private yAxis: any;
+
+  public equalAxes: () => { x: [number, number], y: [number, number]}
+  = () => {
+    let extent = this.extent(
+      this.data,
+      series => this.envelope(
+        d3.extent(series, d => d[0] as number), 
+        d3.extent(series, d => d[1] as number)
+      )
+    );
+    return { x: extent, y: extent }
+  };
+  public simpleAxes: () => { x: [number, number], y: [number, number]}
+  = () => { return { 
+    x: this.extent(this.data, series => d3.extent(series, d => d[0] as number)), 
+    y: this.extent(this.data, series => d3.extent(series, d => d[1] as number)) 
+  }};
 
   constructor() { }
 
@@ -83,25 +101,43 @@ export class LineChartComponent implements OnInit, OnChanges {
         .text("Price ($)");
   }
 
+  private envelope(pairA: [number, number], pairB: [number, number]): [number, number] {
+    return [ Math.min(pairA[0], pairB[0]), Math.max(pairA[1], pairB[1]) ];
+  }
+
+  private extent(data: number[][][], theThing: (series: number[][]) => [number, number]): [number, number] {
+    return data.map(theThing).reduce((extentA, extentB, i, extents) => this.envelope(extentA, extentB))
+  }
+
+  private getAxisExtents(): { x: [number, number], y: [number, number]} {
+    if (this.axisExtents === 'equalAxes') {
+      return this.equalAxes();
+    } else if (this.axisExtents === 'simpleAxes') {
+      return this.simpleAxes();
+    } else {
+      throw "Unsupported type of axes: " + this.axisExtents;
+    }
+  }
+
   updateChart() {
-    let xExtent = d3.extent(this.data, d => d[0]);
-    let yExtent = d3.extent(this.data, d => d[1]);
-    let extent = [ Math.min(xExtent[0], yExtent[0]), Math.max(xExtent[1], yExtent[1]) ];
-    this.xScale.domain(extent);
-    this.yScale.domain(extent);
+    let extents = this.getAxisExtents();
+    this.xScale.domain(extents.x);
+    this.yScale.domain(extents.y);
     this.xAxis.transition().call(d3.axisBottom(this.xScale));
     this.yAxis.transition().call(d3.axisLeft(this.yScale));
 
     this.chart.selectAll('.chartLine').remove();
 
-    this.chart.append("path")
-        .datum(this.data)
-        .attr('class', 'chartLine')
-        .attr("fill", "none")
-        .attr("stroke", "steelblue")
-        .attr("stroke-linejoin", "round")
-        .attr("stroke-linecap", "round")
-        .attr("stroke-width", 1.5)
-        .attr("d", this.line);
+    for (var i = this.data.length - 1; i >= 0; i--) {
+      this.chart.append("path")
+          .datum(this.data[i])
+          .attr('class', 'chartLine')
+          .attr("fill", "none")
+          .attr("stroke", "steelblue")
+          .attr("stroke-linejoin", "round")
+          .attr("stroke-linecap", "round")
+          .attr("stroke-width", 1.5)
+          .attr("d", this.line);
+    }
   }
 }

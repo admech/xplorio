@@ -57,7 +57,7 @@ export class AppComponent implements OnInit {
     //     Math.floor(80 + Math.random() * 20)
     //   ]);
     // }
-    this.lineChartData = SERIES[0];
+    this.lineChartData = SERIES;
     console.log(this.lineChartData);
   }
 
