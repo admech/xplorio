@@ -82,7 +82,8 @@ export class LineChartComponent implements OnInit, OnChanges {
         .rangeRound([this.size, 0]);
     this.line = d3.line()
         .x(d => this.xScale(d[0]))
-        .y(d => this.yScale(d[1]));
+        .y(d => this.yScale(d[1]))
+        .curve(d3.curveBasis);
 
     this.xAxis = this.chart.append("g")
         .attr("transform", "translate(0," + this.height + ")");
