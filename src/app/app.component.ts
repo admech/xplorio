@@ -32,7 +32,7 @@ export class AppComponent implements OnInit {
       this.generateBarData();
 
       // change the data periodically
-      // setInterval(() => this.generateData(), 10000);
+      setInterval(() => { this.generateLineData(); this.generateBarData(); }, 3000);
     }, 1000);
   }
 
@@ -44,14 +44,14 @@ export class AppComponent implements OnInit {
       this.lineChartData.push([
         // `Index ${i}`,
         i,
-        Math.floor(Math.random() * 100)
+        Math.floor(Math.random() * 20)
       ]);
     }
     for (let i = 0; i < n; i++) {
       this.lineChartData.push([
         // `Index ${i}`,
         n - i,
-        Math.floor(Math.random() * 100)
+        Math.floor(80 + Math.random() * 20)
       ]);
     }
     console.log(this.lineChartData);

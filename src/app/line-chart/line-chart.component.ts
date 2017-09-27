@@ -2,7 +2,9 @@
 // https://keathmilligan.net/create-a-reusable-chart-component-with-angular-and-d3-js/
 
 import { Component, OnInit, OnChanges, ViewChild, ElementRef, Input, ViewEncapsulation } from '@angular/core';
+
 import * as d3 from 'd3';
+import { ScaleLinear, Line } from 'd3';
 
 @Component({
   selector: 'app-line-chart',
@@ -13,12 +15,13 @@ import * as d3 from 'd3';
 export class LineChartComponent implements OnInit, OnChanges {
   @ViewChild('lineChart') private chartContainer: ElementRef;
   @Input() private data: Array<any>;
-  private margin: any = { top: 20, bottom: 20, left: 20, right: 20};
+  private margin: any = {top: 20, right: 20, bottom: 30, left: 50};
   private chart: any;
   private width: number;
   private height: number;
-  private xScale: any;
-  private yScale: any;
+  private xScale: ScaleLinear<number, number>;
+  private yScale: ScaleLinear<number, number>;
+  private line: Line<[number, number]>;
   private colors: any;
   private xAxis: any;
   private yAxis: any;
@@ -46,68 +49,52 @@ export class LineChartComponent implements OnInit, OnChanges {
       .attr('width', element.offsetWidth)
       .attr('height', element.offsetHeight);
 
-    // chart plot area
-    this.chart = svg.append('g')
-      .attr('class', 'bars')
-      .attr('transform', `translate(${this.margin.left}, ${this.margin.top})`);
+    this.chart = svg.append("g")
+      .attr("transform", "translate(" + this.margin.left + "," + this.margin.top + ")");
 
-    // define X & Y domains
-    const xDomain = this.data.map(d => d[0]);
-    const yDomain = [0, d3.max(this.data, d => d[1])];
+    this.xScale = d3.scaleLinear()
+        .rangeRound([0, this.width]);
+    this.yScale = d3.scaleLinear()
+        .rangeRound([this.height, 0]);
+    this.line = d3.line()
+        .x(d => this.xScale(d[0]))
+        .y(d => this.yScale(d[1]));
 
-    // create scales
-    this.xScale = d3.scaleBand().padding(0.1).domain(xDomain).rangeRound([0, this.width]);
-    this.yScale = d3.scaleLinear().domain(yDomain).range([this.height, 0]);
+    this.xAxis = this.chart.append("g")
+        .attr("transform", "translate(0," + this.height + ")");
+    this.xAxis
+        .call(d3.axisBottom(this.xScale))
+        .select(".domain")
+        .remove();
 
-    // bar colors
-    this.colors = d3.scaleLinear().domain([0, this.data.length]).range(<any[]>['red', 'blue']);
-
-    // x & y axis
-    this.xAxis = svg.append('g')
-      .attr('class', 'axis axis-x')
-      .attr('transform', `translate(${this.margin.left}, ${this.margin.top + this.height})`)
-      .call(d3.axisBottom(this.xScale));
-    this.yAxis = svg.append('g')
-      .attr('class', 'axis axis-y')
-      .attr('transform', `translate(${this.margin.left}, ${this.margin.top})`)
-      .call(d3.axisLeft(this.yScale));
+    this.yAxis = this.chart.append("g")
+        .call(d3.axisLeft(this.yScale));
+    this.yAxis
+        .append("text")
+        .attr("fill", "#000")
+        .attr("transform", "rotate(-90)")
+        .attr("y", 6)
+        .attr("dy", "0.71em")
+        .attr("text-anchor", "end")
+        .text("Price ($)");
   }
 
   updateChart() {
-    // update scales & axis
-    this.xScale.domain(this.data.map(d => d[0]));
-    this.yScale.domain([0, d3.max(this.data, d => d[1])]);
-    this.colors.domain([0, this.data.length]);
+    this.xScale.domain(d3.extent(this.data, d => d[0]));
+    this.yScale.domain(d3.extent(this.data, d => d[1]));
     this.xAxis.transition().call(d3.axisBottom(this.xScale));
     this.yAxis.transition().call(d3.axisLeft(this.yScale));
 
-    const update = this.chart.selectAll('.bar')
-      .data(this.data);
+    this.chart.selectAll('.chartLine').remove();
 
-    // remove exiting bars
-    update.exit().remove();
-
-    // update existing bars
-    this.chart.selectAll('.bar').transition()
-      .attr('x', d => this.xScale(d[0]))
-      .attr('y', d => this.yScale(d[1]))
-      .attr('width', d => this.xScale.bandwidth())
-      .attr('height', d => this.height - this.yScale(d[1]))
-      .style('fill', (d, i) => this.colors(i));
-
-    // add new bars
-    update
-      .enter()
-      .append('rect')
-      .attr('class', 'bar')
-      .attr('x', d => this.xScale(d[0]))
-      .attr('y', d => this.yScale(0))
-      .attr('width', this.xScale.bandwidth())
-      .attr('height', 0)
-      .style('fill', (d, i) => this.colors(i))
-      .transition()
-      .delay((d, i) => i * 10)
-      .attr('y', d => this.yScale(d[1]))
-      .attr('height', d => this.height - this.yScale(d[1]));
+    this.chart.append("path")
+        .datum(this.data)
+        .attr('class', 'chartLine')
+        .attr("fill", "none")
+        .attr("stroke", "steelblue")
+        .attr("stroke-linejoin", "round")
+        .attr("stroke-linecap", "round")
+        .attr("stroke-width", 1.5)
+        .attr("d", this.line);
   }
 }
