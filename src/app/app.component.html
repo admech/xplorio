@@ -1,5 +1,25 @@
 <div>
   <h1>Xplorio</h1>
-  <h3>Line Chart</h3>
-  <app-line-chart *ngIf="lineChartData" [data]="lineChartData" [axisExtents]="'equalAxes'"></app-line-chart>
+  <div *ngIf="lineChartData">
+    <button (click)="newPlot()">New</button>
+    <app-line-chart *ngFor="let entry of lineChartData.entries()" 
+      [index]="entry[0]"
+      [data]="entry[1]" 
+      [axisExtents]="'equalAxes'"
+    ></app-line-chart>
+  </div>
+  <!-- 
+    TO DO:
+    2) enable adding plots dynamically
+    2*) enable dragging plots
+    3) make equal axes fit the data
+    4) add axis names
+    5) make lines colored as per spectrum
+    6) add legend and series names and chart name
+    7) make series and legend highlight on hover if more than one
+    8) make the control that you draw on and it regulates lines' opacity
+    9] make it show mouse cursor x and y values on the axes
+    10] make it show dotted lines from those points on axes to the cursor
+    11] make those values and lines persist on click
+  -->
 </div>

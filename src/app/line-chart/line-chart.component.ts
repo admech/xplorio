@@ -14,6 +14,7 @@ import { ScaleLinear, Line } from 'd3';
 })
 export class LineChartComponent implements OnInit, OnChanges {
   @ViewChild('lineChart') private chartContainer: ElementRef;
+  @Input() private index: number;
   @Input() private data: Array<any>;
   @Input() private axisExtents: string;
   private margin: any = {top: 20, right: 20, bottom: 30, left: 50};

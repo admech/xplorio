@@ -7,6 +7,8 @@ import { DataService } from './data.service';
 import { BarChartComponent } from './bar-chart/bar-chart.component';
 import { LineChartComponent } from './line-chart/line-chart.component';
 
+import { ChartDataService } from './chart-data.service';
+
 @NgModule({
   imports: [
     BrowserModule
@@ -18,7 +20,8 @@ import { LineChartComponent } from './line-chart/line-chart.component';
     , LineChartComponent
   ],
   providers: [
-    DataService
+    DataService,
+    ChartDataService
   ],
   bootstrap: [AppComponent]
 })
