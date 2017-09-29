@@ -1,6 +1,8 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
+import { AngularDraggableModule } from 'angular2-draggable';
+
 import { AppComponent } from './app.component';
 import { PlotComponent } from './plot.component';
 import { DataService } from './data.service';
@@ -11,7 +13,8 @@ import { ChartDataService } from './chart-data.service';
 
 @NgModule({
   imports: [
-    BrowserModule
+    BrowserModule,
+    AngularDraggableModule
   ],
   declarations: [
     AppComponent
