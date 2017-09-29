@@ -18,6 +18,7 @@ const SERIES: number[][][] = [
 export class ChartDataService {
 
   private count = 0;
+  private maxZIndex = 99;
   private data = new ChartData();
 
   constructor() { }
@@ -39,7 +40,7 @@ export class ChartDataService {
           this.data.set(index, new ChartDataEntry(
             index, 
             SERIES, 
-            new ChartDataEntryPosition(null, null, index)
+            new ChartDataEntryPosition(250, 250, this.incrementAndGetMaxZIndex())
           ));
           resolve(true);
         },
@@ -52,6 +53,23 @@ export class ChartDataService {
     console.log('deleting chart #' +  index);
     return new Promise((resolve, reject) => setTimeout(() => {
           this.data.delete(index);
+          resolve(true);
+        },
+        50
+      ))
+      .catch(this.handleError);
+  }
+
+  incrementAndGetMaxZIndex(): number {
+    let result = ++this.maxZIndex;
+    console.log('Issuing new max z-index: ' + result);
+    return result;
+  }
+
+  bringToFront(index: number): Promise<boolean> {
+    console.log('bringing to front chart #' +  index);
+    return new Promise((resolve, reject) => setTimeout(() => {
+          this.data.get(index).setZIndex(this.incrementAndGetMaxZIndex());
           resolve(true);
         },
         50

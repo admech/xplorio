@@ -15,10 +15,16 @@ import { ScaleLinear, Line } from 'd3';
 export class LineChartComponent implements OnInit, OnChanges {
   @ViewChild('lineChart') private chartContainer: ElementRef;
   @Input() private index: number;
+
+  @Input() private left: number;
+  @Input() private top: number;
   @Input() private zIndex: number;
+
   @Input() private data: Array<any>;
   @Input() private axisExtents: string;
   @Output() deleteChart = new EventEmitter<number>();
+  @Output() stoppedDrag = new EventEmitter<number>();
+  @Output() startedDrag = new EventEmitter<number>();
   private margin: any = {top: 20, right: 20, bottom: 30, left: 50};
   private chart: any;
   private size: number;
@@ -147,6 +153,16 @@ export class LineChartComponent implements OnInit, OnChanges {
 
   delete() {
     this.deleteChart.next(this.index);
+  }
+
+  startedDragging() {
+    console.log('Started dragging chart #' + this.index);
+    this.startedDrag.next(this.index);
+  }
+
+  stoppedDragging() {
+    console.log('Stopped dragging chart #' + this.index);
+    this.stoppedDrag.next(this.index);
   }
 
 }

@@ -1,7 +1,11 @@
 <div ngDraggable 
   [handle]="Header"
+  (started)="startedDragging()"
+  (stopped)="stoppedDragging()"
+  [style.left]="left"
+  [style.top]="top"
   [style.z-index]="zIndex"
-  style="border-style: solid; border-color: black; border-width: 2px;"
+  style="border-style: solid; border-color: black; border-width: 2px; position: absolute;"
 >
     <div #Header style="border-style: solid; border-color: lightblue; border-width: 2px; background-color: white">
       <button (click)="delete()">x</button>

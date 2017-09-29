@@ -72,9 +72,17 @@ export class AppComponent implements OnInit {
       });
   }
 
-  bringToFront(entry: ChartDataEntry): void {
-    console.log("Bringing to front chart #" + entry.index());
-    // entry.setZIndex(100);
+  bringToFront(index: number): void {
+    console.log("Bringing to front chart #" + index);
+    this.chartDataService.bringToFront(index)
+      .then(broughtToFront => {
+        if (broughtToFront) {
+          console.log('broughtToFront chart #' + index);
+          this.lineChartDataSubject.next();
+        } else {
+          console.error('could not broughtToFront chart');
+        }
+      });
   }
 
 }

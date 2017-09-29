@@ -47,6 +47,29 @@ export class ChartDataEntry {
     return this.position.zIndex;
   }
 
+  setZIndex(zIndex: number) {
+    console.log('Changing entry #' + this._index + ' zIndex from ' + this.position.zIndex + ' to ' + zIndex);
+    this.position.zIndex = zIndex;
+  }
+
+  left() {
+    return this.position.left;
+  }
+
+  setLeft(left: number) {
+    console.log('Changing entry #' + this._index + ' left from ' + this.position.left + ' to ' + left);
+    this.position.left = left;
+  }
+
+  top() {
+    return this.position.top;
+  }
+
+  setTop(top: number) {
+    console.log('Changing entry #' + this._index + ' top from ' + this.position.top + ' to ' + top);
+    this.position.top = top;
+  }
+
 }
 
 export class ChartDataEntryPosition {
