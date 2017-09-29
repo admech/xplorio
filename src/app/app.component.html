@@ -1,16 +1,16 @@
 <div>
   <h1>Xplorio</h1>
   <div *ngIf="lineChartData">
-    <button (click)="newPlot()">New</button>
-    <app-line-chart *ngFor="let entry of lineChartData.entries()" 
-      [index]="entry[0]"
-      [data]="entry[1]" 
+    <button (click)="newChart()">New</button>
+    <app-line-chart *ngFor="let entry of lineChartData | async" 
+      [index]="entry.index()"
+      [data]="entry.data()" 
       [axisExtents]="'equalAxes'"
+      (deleteChart)="deleteChart($event)"
     ></app-line-chart>
   </div>
   <!-- 
     TO DO:
-    2) enable adding plots dynamically
     2*) enable dragging plots
     3) make equal axes fit the data
     4) add axis names

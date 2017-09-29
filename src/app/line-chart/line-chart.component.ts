@@ -1,7 +1,7 @@
 // Based on a tutorial by Keath Milligan
 // https://keathmilligan.net/create-a-reusable-chart-component-with-angular-and-d3-js/
 
-import { Component, OnInit, OnChanges, ViewChild, ElementRef, Input, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, OnChanges, EventEmitter, ViewChild, ElementRef, Input, Output, ViewEncapsulation } from '@angular/core';
 
 import * as d3 from 'd3';
 import { ScaleLinear, Line } from 'd3';
@@ -17,6 +17,7 @@ export class LineChartComponent implements OnInit, OnChanges {
   @Input() private index: number;
   @Input() private data: Array<any>;
   @Input() private axisExtents: string;
+  @Output() deleteChart = new EventEmitter<number>();
   private margin: any = {top: 20, right: 20, bottom: 30, left: 50};
   private chart: any;
   private size: number;
@@ -142,4 +143,9 @@ export class LineChartComponent implements OnInit, OnChanges {
           .attr("d", this.line);
     }
   }
+
+  delete() {
+    this.deleteChart.next(this.index);
+  }
+
 }

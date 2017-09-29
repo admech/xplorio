@@ -2,8 +2,15 @@ import { Component, OnInit } from '@angular/core';
 
 import * as d3 from 'd3';
 
+import { Observable } from 'rxjs/Observable';
+import { Subscription } from 'rxjs/Subscription';
+import { Subject } from 'rxjs/Subject';
+import 'rxjs/add/operator/switchMap';
+import 'rxjs/add/operator/catch';
+import 'rxjs/add/observable/of';
+
 // import { SERIES } from './mock-data';
-import { ChartData } from './chart-data';
+import { ChartData, ChartDataEntry } from './chart-data';
 import { ChartDataService } from './chart-data.service';
 
 
@@ -23,7 +30,8 @@ export class AppComponent implements OnInit {
 
   title = 'app';
 
-  private lineChartData: ChartData;
+  private lineChartData: Observable<ChartDataEntry[]>;
+  private sub = new Subject<void>();
 
   constructor(
     private chartDataService: ChartDataService
@@ -34,19 +42,45 @@ export class AppComponent implements OnInit {
     // setTimeout(() => {
       // this.generateLineData();
     // }, 1000);
-    this.loadData();
+    this.lineChartData = this.sub
+      .switchMap(it => this.chartDataService.getChartData())
+      .catch(error => {
+        console.error('error on get chart data: ' + error);
+        return Observable.of([]);
+      });
+    
+      // this.sub
+      // .switchMap(() => this.chartDataService.getChartData())
+      // .catch(error => {
+      //   console.error(error);
+      //   return Observable.of<ChartDataEntry[]>([]);
+      // });
   }
 
-  loadData() {
-    this.chartDataService.getChartData().then(data => this.lineChartData = data);
+  newChart() {
+    console.log('creating a new chart');
+    this.chartDataService.create()
+      .then(created => {
+        if (created) {
+          console.log('created.');
+          this.sub.next();
+        } else {
+          console.error('could not create chart');
+        }
+      });
   }
 
-  newPlot() {
-    if (this.lineChartData) {
-      this.chartDataService.create().then(() => this.loadData());
-    } else {
-      console.error('Tried to add new plot while chart data still loading. Should not have shown the button!');
-    }
+  deleteChart(index: number) {
+    console.log('deleting chart #' + index);
+    this.chartDataService.delete(index)
+      .then(deleted => {
+        if (deleted) {
+          console.log('deleted chart #' + index);
+          this.sub.next();
+        } else {
+          console.error('could not delete chart');
+        }
+      });
   }
 
 }
