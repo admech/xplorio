@@ -4,9 +4,11 @@
     <button (click)="newChart()">New</button>
     <app-line-chart *ngFor="let entry of lineChartData | async" 
       [index]="entry.index()"
+      [zIndex]="entry.zIndex()"
       [data]="entry.data()" 
       [axisExtents]="'equalAxes'"
       (deleteChart)="deleteChart($event)"
+      (mousedown)="bringToFront(entry)"
     ></app-line-chart>
   </div>
   <!-- 

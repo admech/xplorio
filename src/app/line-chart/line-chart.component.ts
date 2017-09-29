@@ -15,6 +15,7 @@ import { ScaleLinear, Line } from 'd3';
 export class LineChartComponent implements OnInit, OnChanges {
   @ViewChild('lineChart') private chartContainer: ElementRef;
   @Input() private index: number;
+  @Input() private zIndex: number;
   @Input() private data: Array<any>;
   @Input() private axisExtents: string;
   @Output() deleteChart = new EventEmitter<number>();

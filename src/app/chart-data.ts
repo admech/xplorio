@@ -1,13 +1,13 @@
 export class ChartData {
 
-  private data = new Map<number, Array<any>>();
+  private data = new Map<number, ChartDataEntry>();
 
-  set(index: number, data: Array<any>) {
-    console.log('Adding at ' + index + ', length: ' + data.length);
-    this.data.set(index, data);
+  set(index: number, entry: ChartDataEntry) {
+    console.log('Adding at ' + index + ', num series: ' + entry.data.length);
+    this.data.set(index, entry);
   }
 
-  get(index: number): Array<any> {
+  get(index: number): ChartDataEntry {
     console.log('Getting at ' + index);
     return this.data.get(index);
   }
@@ -18,9 +18,10 @@ export class ChartData {
   }
 
   entries(): ChartDataEntry[] {
+    let zIndex = 0;
     return Array.from(
       this.data.entries(),
-      (entry, i) => new ChartDataEntry(entry)
+      (kv, i) => kv[1]
     );
   }
 
@@ -29,15 +30,30 @@ export class ChartData {
 export class ChartDataEntry {
 
   constructor(
-    private entry: [number, any[]]
+    private _index: number,
+    private _data: any[],
+    private position: ChartDataEntryPosition
   ) { }
 
   index() {
-    return this.entry[0];
+    return this._index;
   }
 
   data() {
-    return this.entry[1];
+    return this._data;
+  }
+
+  zIndex() {
+    return this.position.zIndex;
   }
 
 }
+
+export class ChartDataEntryPosition {
+  constructor(
+    public left: number | null,
+    public top: number | null,
+    public zIndex: number
+  ) {}
+}
+

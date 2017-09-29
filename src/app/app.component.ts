@@ -31,30 +31,19 @@ export class AppComponent implements OnInit {
   title = 'app';
 
   private lineChartData: Observable<ChartDataEntry[]>;
-  private sub = new Subject<void>();
+  private lineChartDataSubject = new Subject<void>();
 
   constructor(
     private chartDataService: ChartDataService
   ) {}
 
   ngOnInit() {
-    // give everything a chance to get loaded before starting the animation to reduce choppiness
-    // setTimeout(() => {
-      // this.generateLineData();
-    // }, 1000);
-    this.lineChartData = this.sub
+    this.lineChartData = this.lineChartDataSubject
       .switchMap(it => this.chartDataService.getChartData())
       .catch(error => {
         console.error('error on get chart data: ' + error);
         return Observable.of([]);
       });
-    
-      // this.sub
-      // .switchMap(() => this.chartDataService.getChartData())
-      // .catch(error => {
-      //   console.error(error);
-      //   return Observable.of<ChartDataEntry[]>([]);
-      // });
   }
 
   newChart() {
@@ -63,7 +52,7 @@ export class AppComponent implements OnInit {
       .then(created => {
         if (created) {
           console.log('created.');
-          this.sub.next();
+          this.lineChartDataSubject.next();
         } else {
           console.error('could not create chart');
         }
@@ -76,11 +65,16 @@ export class AppComponent implements OnInit {
       .then(deleted => {
         if (deleted) {
           console.log('deleted chart #' + index);
-          this.sub.next();
+          this.lineChartDataSubject.next();
         } else {
           console.error('could not delete chart');
         }
       });
+  }
+
+  bringToFront(entry: ChartDataEntry): void {
+    console.log("Bringing to front chart #" + entry.index());
+    // entry.setZIndex(100);
   }
 
 }
