@@ -1,6 +1,27 @@
+.d3-container {
+  border-style: solid;
+  border-color: black;
+  border-width: 2px;
+  position: absolute;
+  height: width/0.8;
+  width: 300px;
+  overflow: hidden;
+}
+
+.d3-header {
+   border-style: solid;
+   border-color: lightblue;
+   border-width: 2px;
+   background-color: white;
+   width: /*500px*/ 100% - 2*border-width;
+   height: /*300px*/ 20%;    
+}
+
 .d3-chart {
- width: 500px/*100%*/;
- height: 300px;    
+ width: /*500px*/ 100%;
+ height: /*300px*/ 80%;    
+ min-width: 300px - 4px;
+ min-height: 300px;
 }   
 
 .d3-chart .axis path,   

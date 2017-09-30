@@ -1,6 +1,8 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
+import { NgResizableModule } from 'ngresizable';
+
 // import { AngularDraggableModule } from 'angular2-draggable';
 import { AngularDraggableDirective } from './drag/drag.directive';
 export * from './drag/drag.directive';
@@ -17,6 +19,7 @@ import { ChartDataService } from './chart-data.service';
   imports: [
     BrowserModule
     // , AngularDraggableModule
+    , NgResizableModule
   ],
   declarations: [
     AppComponent

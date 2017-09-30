@@ -59,16 +59,26 @@ export class LineChartComponent implements OnInit, OnChanges {
   constructor() { }
 
   ngOnInit() {
-    this.createChart();
-    if (this.data) {
-      this.updateChart();
-    }
+    this.createAndUpdateChart();
   }
 
   ngOnChanges() {
     if (this.chart) {
       this.updateChart();
     }
+  }
+
+  createAndUpdateChart() {
+    this.createChart();
+    if (this.data) {
+      this.updateChart();
+    }
+  }
+
+  recreateChart() {
+    const element = this.chartContainer.nativeElement;
+    d3.select(element).select('svg').remove();
+    this.createAndUpdateChart();
   }
 
   createChart() {
@@ -142,8 +152,8 @@ export class LineChartComponent implements OnInit, OnChanges {
     this.xScale.domain(extentX);
     this.yScale.domain(extentY);
 
-    this.xAxis.transition().call(d3.axisBottom(this.xScale));
-    this.yAxis.transition().call(d3.axisLeft(this.yScale));
+    // this.xAxis.transition().call(d3.axisBottom(this.xScale));
+    // this.yAxis.transition().call(d3.axisLeft(this.yScale));
 
     this.chart.selectAll('.chartLine').remove();
 

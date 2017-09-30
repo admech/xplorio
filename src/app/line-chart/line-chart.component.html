@@ -1,13 +1,22 @@
-<div xplorioDrag
+<div
+  class="d3-container"
+
+  xplorioDrag
   [handle]="Header"
   (started)="startedDragging()"
   (stopped)="stoppedDragging()"
+  [style.z-index]="indexOfZ | async"
+
+  ngResizable
+  [directions]="['bottom', 'top', 'left', 'right', 'top-left', 'bottom-left', 'top-right', 'bottom-right']"
+  [minWidth]="320"
+  [minHeight]="400"
+  (resizeEnd)="recreateChart()"
+
   [style.left]="left"
   [style.top]="top"
-  [style.z-index]="indexOfZ | async"
-  style="border-style: solid; border-color: black; border-width: 2px; position: absolute;"
 >
-    <div #Header style="border-style: solid; border-color: lightblue; border-width: 2px; background-color: white">
+    <div #Header class="d3-header">
       <button (click)="delete()">x</button>
       <h2>Chart #{{index}}</h2>
     </div>
