@@ -8,10 +8,10 @@ import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/of';
 
-import { Updatable } from './updatable';
+import { Updatable } from '../updatable';
 
-import { ChartData, ChartDataEntry } from './chart-data';
-import { ChartDataService } from './chart-data.service';
+import { ChartData, ChartDataEntry } from '../chart-data';
+import { ChartDataService } from '../chart-data.service';
 
 
 @Component({
@@ -22,11 +22,13 @@ import { ChartDataService } from './chart-data.service';
 export class ChartingComponent implements OnInit {
 
   private lineChartData: Observable<ChartDataEntry[]>;
-  private lineChartDataSubject = new Subject<void>();
+  private lineChartDataSubject: Subject<void>;
 
   constructor(
     private chartDataService: ChartDataService
-  ) {}
+  ) {
+    this.lineChartDataSubject = chartDataService.getSubject();
+  }
 
   ngOnInit() {
     this.lineChartData = this.lineChartDataSubject
@@ -34,17 +36,6 @@ export class ChartingComponent implements OnInit {
       .catch(error => {
         console.error('error on get chart data: ' + error);
         return Observable.of([]);
-      });
-    this.newChart();
-  }
-
-  newChart() {
-    console.log('creating a new chart');
-    this.chartDataService.create()
-      .then(entry => {
-        console.log('created.');
-        this.lineChartDataSubject.next();
-        this.chartDataService.bringToFront(entry.index());
       });
   }
 

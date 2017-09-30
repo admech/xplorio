@@ -9,7 +9,8 @@ import { ScaleLinear, Line } from 'd3';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/last';
 
-import { ChartAxes, AxisScale } from '../chart-data';
+import { ChartAxes } from '../chart-data';
+import { AxisScale } from '../chart-types';
 
 @Component({
   selector: 'app-line-chart',

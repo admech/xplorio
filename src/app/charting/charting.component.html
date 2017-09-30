@@ -1,5 +1,4 @@
 <div *ngIf="lineChartData">
-  <button (click)="newChart()">New</button>
   <app-line-chart *ngFor="let entry of lineChartData | async" 
     [index]="entry.index()"
 

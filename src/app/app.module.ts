@@ -8,7 +8,7 @@ import { AngularDraggableDirective } from './drag/drag.directive';
 export * from './drag/drag.directive';
 
 import { AppComponent } from './app.component';
-import { ChartingComponent } from './charting.component';
+import { ChartingComponent } from './charting/charting.component';
 import { BarChartComponent } from './bar-chart/bar-chart.component';
 import { LineChartComponent } from './line-chart/line-chart.component';
 

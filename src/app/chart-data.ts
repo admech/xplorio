@@ -3,6 +3,8 @@ import 'rxjs/add/operator/last';
 
 import { Updatable } from './updatable';
 
+import { AxisScale } from './chart-types';
+
 export class ChartData {
 
   private data = new Map<number, ChartDataEntry>();
@@ -72,8 +74,6 @@ export class ChartDataEntry {
   }
 
 }
-
-export type AxisScale = 'equal' | 'simple';
 
 export class ChartAxes {
   
