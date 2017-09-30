@@ -39,7 +39,8 @@ export class ChartDataService {
           let entry = new ChartDataEntry(
             index,
             'trajectory',
-            SERIES, 
+            SERIES,
+            [ 's1', 's2', 's3', 's4'],
             new ChartDataEntryPosition(250, 250, 99999),
             new ChartAxes('x', 'y', 'equal')
           );

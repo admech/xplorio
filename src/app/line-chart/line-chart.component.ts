@@ -30,11 +30,12 @@ export class LineChartComponent implements OnInit, OnChanges {
   @Input() private data: Array<any>;
   @Input() private axes: ChartAxes;
   @Input() private axesScale: AxisScale;
+  @Input() private seriesNames: string[];
 
   @Output() deleteChart = new EventEmitter<number>();
   @Output() stoppedDrag = new EventEmitter<number>();
   @Output() startedDrag = new EventEmitter<number>();
-  private margin: any = {top: 20, right: 20, bottom: 30, left: 50};
+  private margin: any = {top: 20, right: 20, bottom: 130, left: 50};
   private chart: any;
   private scales: { maxX: number, minY: number };
   private width: number;
@@ -154,7 +155,20 @@ export class LineChartComponent implements OnInit, OnChanges {
 
     this.colors.domain([0, this.data.length]);
 
+    this.chart.selectAll('.legend').remove();
     this.chart.selectAll('.chartLine').remove();
+
+    let legend = d3.select(this.chartContainer.nativeElement).select('svg')
+      .append('g')
+      .attr('class', 'legend')
+      // .attr('x', 0)
+      // .attr('y', 0)
+      // .attr('width', '100%')
+      // .attr('height', 80)
+      // .attr('stroke', 'lightblue')
+      // .attr('fill', 'none')
+      // .attr('stroke-width', 1)
+      ;
 
     for (var i = this.data.length - 1; i >= 0; i--) {
       this.chart.append("path")
@@ -166,7 +180,30 @@ export class LineChartComponent implements OnInit, OnChanges {
           .attr("stroke-linecap", "round")
           .attr("stroke-width", 1.5)
           .attr("d", this.line);
+
+      let legY = this.height + 60 + i*25;
+      legend.append('path')
+          .attr("fill", "none")
+          .attr("stroke", this.colors(i))
+          .attr("stroke-linejoin", "round")
+          .attr("stroke-linecap", "round")
+          .attr("stroke-width", 1.5)
+          .datum([[20, legY], [60, legY]])
+          .attr('d', 
+            d3.line()
+              .x(d => d[0])
+              .y(d => d[1])
+          );
+      legend.append('text')
+          .attr("stroke", "none")
+          .attr("fill", 'black')
+          .attr("font-size", '15px')
+          .attr('x', 80)
+          .attr('y', legY + 3)
+          .text(this.seriesNames[i]);
     }
+
+
   }
 
   delete() {

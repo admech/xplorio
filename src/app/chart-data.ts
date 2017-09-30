@@ -38,6 +38,7 @@ export class ChartDataEntry {
     private _index: number,
     private _name: string,
     private _data: any[],
+    private seriesNames: string[],
     private position: ChartDataEntryPosition,
     private _axes: ChartAxes
   ) { }

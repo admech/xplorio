@@ -14,6 +14,7 @@
       [data]="entry.data()" 
       [axes]="entry.axes()"
       [axesScale]="entry.axes().scale"
+      [seriesNames]="entry.seriesNames"
 
       (deleteChart)="deleteChart($event)"
       (startedDrag)="bringToFront($event)"
