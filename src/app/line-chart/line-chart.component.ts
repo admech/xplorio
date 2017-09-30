@@ -23,13 +23,13 @@ export class LineChartComponent implements OnInit, OnChanges {
   @Input() private indexOfZ: Observable<number>;
 
   @Input() private data: Array<any>;
-  @Input() private axisExtents: string;
+  @Input() private axisScales: string;
   @Output() deleteChart = new EventEmitter<number>();
   @Output() stoppedDrag = new EventEmitter<number>();
   @Output() startedDrag = new EventEmitter<number>();
   private margin: any = {top: 20, right: 20, bottom: 30, left: 50};
   private chart: any;
-  private size: number;
+  private scales: { maxX: number, minY: number };
   private width: number;
   private height: number;
   private xScale: ScaleLinear<number, number>;
@@ -84,18 +84,18 @@ export class LineChartComponent implements OnInit, OnChanges {
     this.chart = svg.append("g")
       .attr("transform", "translate(" + this.margin.left + "," + this.margin.top + ")");
 
-    this.size = Math.min(this.width, this.height);
+    this.scales = this.getAxisScales(this.width, this.height);
     this.xScale = d3.scaleLinear()
-        .rangeRound([0, this.size]);
+        .rangeRound([0, this.scales.maxX]);
     this.yScale = d3.scaleLinear()
-        .rangeRound([this.size, 0]);
+        .rangeRound([this.scales.minY, 0]);
     this.line = d3.line()
         .x(d => this.xScale(d[0]))
         .y(d => this.yScale(d[1]))
         .curve(d3.curveBasis);
 
     this.xAxis = this.chart.append("g")
-        .attr("transform", "translate(0," + this.size + ")");
+        .attr("transform", "translate(0," + this.scales.minY + ")");
     this.xAxis
         .call(d3.axisBottom(this.xScale));
 
@@ -119,13 +119,20 @@ export class LineChartComponent implements OnInit, OnChanges {
     return data.map(listOfSeries).reduce((extentA, extentB, i, extents) => this.envelope(extentA, extentB))
   }
 
-  private getAxisScales(): { x: [number, number], y: [number, number] } {
-    if (this.axisExtents === 'equalAxes') {
-      return this.equalAxes();
-    } else if (this.axisExtents === 'simpleAxes') {
-      return this.simpleAxes();
+  private getAxisScales(width: number, height: number): { maxX: number, minY: number } {
+    if (this.axisScales === 'equalAxes') {
+      let size = Math.min(width, height);
+      return {
+        maxX: size,
+        minY: size
+      };
+    } else if (this.axisScales === 'simpleAxes') {
+      return {
+        maxX: width,
+        minY: height
+      };
     } else {
-      throw "Unsupported type of axes: " + this.axisExtents;
+      throw "Unsupported type of axes: " + this.axisScales;
     }
   }
 
