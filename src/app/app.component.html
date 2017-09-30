@@ -10,8 +10,7 @@
       [indexOfZ]="entry.zIndex()"
 
       [data]="entry.data()" 
-      [axisScales]="'equalAxes'"
-      [axisNames]="entry.axes()"
+      [axes]="entry.axes()"
 
       (deleteChart)="deleteChart($event)"
       (startedDrag)="bringToFront($event)"

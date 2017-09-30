@@ -1,9 +1,7 @@
-import { Observable } from 'rxjs/Observable';
-import { Subject } from 'rxjs/Subject';
-import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/last';
-import 'rxjs/add/observable/of';
+
+import { Updatable } from './updatable';
 
 export class ChartData {
 
@@ -40,7 +38,7 @@ export class ChartDataEntry {
     private _index: number,
     private _data: any[],
     private position: ChartDataEntryPosition,
-    private _axes: { x: string, y: string }
+    private _axes: ChartAxes
   ) { }
 
   index() {
@@ -85,25 +83,33 @@ export class ChartDataEntry {
 }
 
 export class ChartDataEntryPosition {
-  private zIndexSubject = new Subject<number>();
-  private zIndex = this.zIndexSubject
-      .switchMap(nextZIndex => Observable.of(nextZIndex));
+  private zIndex: Updatable<number>;
 
   constructor(
     public left: number | null,
     public top: number | null,
     private initialZIndex: number
   ) {
-    this.setZIndex(this.initialZIndex);
+    this.zIndex = new Updatable(initialZIndex);
   }
 
   getZIndex() {
-    return this.zIndex;
+    return this.zIndex.get();
   }
 
   setZIndex(nextZIndex: number) {
-    this.zIndexSubject.next(nextZIndex);
+    this.zIndex.set(nextZIndex);
   }
 
 }
+
+export class ChartAxes {
+  constructor(
+    public xName: string,
+    public yName: string,
+    public scale: 'equal' | 'simple'
+  ) { }
+}
+
+
 

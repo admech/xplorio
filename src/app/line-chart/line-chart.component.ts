@@ -8,6 +8,8 @@ import { ScaleLinear, Line } from 'd3';
 
 import { Observable } from 'rxjs/Observable';
 
+import { ChartAxes } from '../chart-data';
+
 @Component({
   selector: 'app-line-chart',
   templateUrl: './line-chart.component.html',
@@ -23,8 +25,7 @@ export class LineChartComponent implements OnInit, OnChanges {
   @Input() private indexOfZ: Observable<number>;
 
   @Input() private data: Array<any>;
-  @Input() private axisScales: string;
-  @Input() private axisNames: { x: string, y: string };
+  @Input() private axes: ChartAxes;
 
   @Output() deleteChart = new EventEmitter<number>();
   @Output() stoppedDrag = new EventEmitter<number>();
@@ -120,7 +121,7 @@ export class LineChartComponent implements OnInit, OnChanges {
         .attr("x", this.scales.maxX + 6)
         .attr("dx", "0.71em")
         .attr("text-anchor", "end")
-        .text(this.axisNames.x);
+        .text(this.axes.xName);
 
     this.yAxis = this.chart.append("g")
         .call(d3.axisLeft(this.yScale));
@@ -130,7 +131,7 @@ export class LineChartComponent implements OnInit, OnChanges {
         .attr("x", 6)
         .attr("dx", "0.71em")
         .attr("text-anchor", "end")
-        .text(this.axisNames.y);
+        .text(this.axes.yName);
   }
 
   private envelope(pairA: [number, number], pairB: [number, number]): [number, number] {
@@ -142,19 +143,19 @@ export class LineChartComponent implements OnInit, OnChanges {
   }
 
   private getAxisScales(width: number, height: number): { maxX: number, minY: number } {
-    if (this.axisScales === 'equalAxes') {
+    if (this.axes.scale === 'equal') {
       let size = Math.min(width, height);
       return {
         maxX: size,
         minY: size
       };
-    } else if (this.axisScales === 'simpleAxes') {
+    } else if (this.axes.scale === 'simple') {
       return {
         maxX: width,
         minY: height
       };
     } else {
-      throw "Unsupported type of axes: " + this.axisScales;
+      throw "Unsupported type of axes: " + this.axes.scale;
     }
   }
 

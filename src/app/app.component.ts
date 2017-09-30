@@ -8,6 +8,8 @@ import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/of';
 
+import { Updatable } from './updatable';
+
 // import { SERIES } from './mock-data';
 import { ChartData, ChartDataEntry } from './chart-data';
 import { ChartDataService } from './chart-data.service';
@@ -31,6 +33,7 @@ export class AppComponent implements OnInit {
 
   private lineChartData: Observable<ChartDataEntry[]>;
   private lineChartDataSubject = new Subject<void>();
+
 
   constructor(
     private chartDataService: ChartDataService
