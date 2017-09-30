@@ -7,8 +7,9 @@ import * as d3 from 'd3';
 import { ScaleLinear, Line } from 'd3';
 
 import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/operator/last';
 
-import { ChartAxes } from '../chart-data';
+import { ChartAxes, AxisScale } from '../chart-data';
 
 @Component({
   selector: 'app-line-chart',
@@ -20,12 +21,15 @@ export class LineChartComponent implements OnInit, OnChanges {
   @ViewChild('lineChart') private chartContainer: ElementRef;
   @Input() private index: number;
 
+  @Input() private name: string;
+
   @Input() private left: number;
   @Input() private top: number;
   @Input() private indexOfZ: Observable<number>;
 
   @Input() private data: Array<any>;
   @Input() private axes: ChartAxes;
+  @Input() private axesScale: AxisScale;
 
   @Output() deleteChart = new EventEmitter<number>();
   @Output() stoppedDrag = new EventEmitter<number>();
@@ -41,23 +45,6 @@ export class LineChartComponent implements OnInit, OnChanges {
   private colors: any;
   private xAxis: any;
   private yAxis: any;
-
-  public equalAxes: () => { x: [number, number], y: [number, number]}
-  = () => {
-    let extent = this.extent(
-      this.data,
-      series => this.envelope(
-        d3.extent(series, d => d[0] as number), 
-        d3.extent(series, d => d[1] as number)
-      )
-    );
-    return { x: extent, y: extent }
-  };
-  public simpleAxes: () => { x: [number, number], y: [number, number]}
-  = () => { return { 
-    x: this.extent(this.data, series => d3.extent(series, d => d[0] as number)), 
-    y: this.extent(this.data, series => d3.extent(series, d => d[1] as number)) 
-  }};
 
   constructor() { }
 
@@ -143,19 +130,19 @@ export class LineChartComponent implements OnInit, OnChanges {
   }
 
   private getAxisScales(width: number, height: number): { maxX: number, minY: number } {
-    if (this.axes.scale === 'equal') {
+    if (this.axesScale === 'equal') {
       let size = Math.min(width, height);
       return {
         maxX: size,
         minY: size
       };
-    } else if (this.axes.scale === 'simple') {
+    } else if (this.axesScale === 'simple') {
       return {
         maxX: width,
         minY: height
       };
     } else {
-      throw "Unsupported type of axes: " + this.axes.scale;
+      throw "Unsupported type of axes: " + this.axesScale;
     }
   }
 
@@ -167,9 +154,6 @@ export class LineChartComponent implements OnInit, OnChanges {
 
     this.colors.domain([0, this.data.length]);
 
-    // this.xAxis.transition().call(d3.axisBottom(this.xScale));
-    // this.yAxis.transition().call(d3.axisLeft(this.yScale));
-
     this.chart.selectAll('.chartLine').remove();
 
     for (var i = this.data.length - 1; i >= 0; i--) {
@@ -178,7 +162,6 @@ export class LineChartComponent implements OnInit, OnChanges {
           .attr('class', 'chartLine')
           .attr("fill", "none")
           .attr("stroke", this.colors(i))
-          // .style('stroke', (d, i) => this.colors(i))
           .attr("stroke-linejoin", "round")
           .attr("stroke-linecap", "round")
           .attr("stroke-width", 1.5)
@@ -188,6 +171,16 @@ export class LineChartComponent implements OnInit, OnChanges {
 
   delete() {
     this.deleteChart.next(this.index);
+  }
+
+  setEqualAxes() {
+    console.log('setting equal axes');
+    this.axesScale = 'equal';
+  }
+  
+  setSimpleAxes() {
+    console.log('setting simple axes');
+    this.axesScale = 'simple';
   }
 
   startedDragging() {

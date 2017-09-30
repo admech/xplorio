@@ -36,6 +36,7 @@ export class ChartDataEntry {
 
   constructor(
     private _index: number,
+    private _name: string,
     private _data: any[],
     private position: ChartDataEntryPosition,
     private _axes: ChartAxes
@@ -43,6 +44,10 @@ export class ChartDataEntry {
 
   index() {
     return this._index;
+  }
+
+  name() {
+    return this._name;
   }
 
   data() {
@@ -103,12 +108,16 @@ export class ChartDataEntryPosition {
 
 }
 
+export type AxisScale = 'equal' | 'simple';
+
 export class ChartAxes {
+  
   constructor(
     public xName: string,
     public yName: string,
-    public scale: 'equal' | 'simple'
+    public scale: AxisScale
   ) { }
+
 }
 
 

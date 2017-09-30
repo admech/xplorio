@@ -52,10 +52,10 @@ export class AppComponent implements OnInit {
   newChart() {
     console.log('creating a new chart');
     this.chartDataService.create()
-      .then(index => {
+      .then(entry => {
         console.log('created.');
         this.lineChartDataSubject.next();
-        this.chartDataService.bringToFront(index);
+        this.chartDataService.bringToFront(entry.index());
       });
   }
 

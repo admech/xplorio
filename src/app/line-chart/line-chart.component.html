@@ -18,7 +18,9 @@
 >
     <div #Header class="d3-header">
       <button (click)="delete()">x</button>
-      <h2>Chart #{{index}}</h2>
+      <button (click)="setEqualAxes()">equal axes</button>
+      <button (click)="setSimpleAxes()">simple axes</button>
+      <h3>#{{index}} - {{name}}</h3>
     </div>
     <div class="d3-chart" #lineChart></div>  
 </div>

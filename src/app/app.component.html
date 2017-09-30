@@ -5,16 +5,20 @@
     <app-line-chart *ngFor="let entry of lineChartData | async" 
       [index]="entry.index()"
 
+      [name]="entry.name()"
+
       [left]="entry.left()"
       [top]="entry.top()"
       [indexOfZ]="entry.zIndex()"
 
       [data]="entry.data()" 
       [axes]="entry.axes()"
+      [axesScale]="entry.axes().scale"
 
       (deleteChart)="deleteChart($event)"
       (startedDrag)="bringToFront($event)"
     ></app-line-chart>
+    <!-- [axesScale]="entry.axes().scale.get() | async" -->
   </div>
   <!-- 
     TO DO:
@@ -22,12 +26,13 @@
     7) make series and legend highlight on hover if more than one
     8) make axes labels show proper values, not 0..1
     9) make the control that you draw on and it regulates lines' opacity
-    10) make a switch equal vs simple axes
     nice to have:
       1) make it show mouse cursor x and y values on the axes
       2) make it show dotted lines from those points on axes to the cursor
       3) make those values and lines persist on click
       4) make the chart draggable with its title, not only the header
       5) make the chart resize so that its margins are always the same
+      6) make the equal vs simple axes switch work async (and from 1st click)
+      7) remove the type alias export warning
   -->
 </div>
