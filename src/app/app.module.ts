@@ -14,6 +14,7 @@ import { LineChartComponent } from './line-chart/line-chart.component';
 
 import { ChartDataService } from './chart-data.service';
 import { SolutionService } from './solution.service';
+import { DataSelectorComponent } from './data-selector/data-selector.component';
 
 
 @NgModule({
@@ -26,7 +27,7 @@ import { SolutionService } from './solution.service';
     , ChartingComponent
     , BarChartComponent
     , LineChartComponent
-    , AngularDraggableDirective
+    , AngularDraggableDirective, DataSelectorComponent
   ],
   providers: [
     ChartDataService,

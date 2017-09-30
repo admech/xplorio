@@ -7,3 +7,13 @@ export type XSolution = {
     series: [number, number][]
   }>
 };
+
+export type AvailableData = {
+  solutions: string[],
+  variables: string[]
+};
+
+export type SelectedItems = { 
+  variable: string, 
+  solutions: string[]
+};

@@ -1,0 +1,26 @@
+<div *ngIf="availableData">
+  <table>
+    <tr>
+      <td>sols \ vars</td>
+      <td *ngFor="let v of availableData.variables">{{v}}</td>
+    </tr>
+    <tr *ngFor="let solution of availableData.solutions">
+      <td>
+        {{solution}}
+      </td>
+      <td *ngFor="let v of availableData.variables">
+        <div *ngIf="isSelected(solution, v);then deselectable else selectable"></div>
+        <ng-template #selectable>
+          <div (click)="select(solution, v)">
+            o
+          </div>
+        </ng-template>
+        <ng-template #deselectable>
+          <div (click)="deselect(solution, v)">
+            +
+          </div>
+        </ng-template>
+      </td>
+    </tr>
+  </table>
+</div>
