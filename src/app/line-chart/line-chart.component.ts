@@ -73,10 +73,8 @@ export class LineChartComponent implements OnInit, OnChanges {
 
   createChart() {
     const element = this.chartContainer.nativeElement;
-    // let w = element.offsetWidth;
-    // let h = element.offsetHeight;
-    let w = 400;
-    let h = 400;
+    let w = element.offsetWidth;
+    let h = element.offsetHeight;
     this.width = w - this.margin.left - this.margin.right;
     this.height = h - this.margin.top - this.margin.bottom;
     const svg = d3.select(element).append('svg')
@@ -86,7 +84,7 @@ export class LineChartComponent implements OnInit, OnChanges {
     this.chart = svg.append("g")
       .attr("transform", "translate(" + this.margin.left + "," + this.margin.top + ")");
 
-    this.size = Math.max(this.width, this.height);
+    this.size = Math.min(this.width, this.height);
     this.xScale = d3.scaleLinear()
         .rangeRound([0, this.size]);
     this.yScale = d3.scaleLinear()
@@ -97,7 +95,7 @@ export class LineChartComponent implements OnInit, OnChanges {
         .curve(d3.curveBasis);
 
     this.xAxis = this.chart.append("g")
-        .attr("transform", "translate(0," + this.height + ")");
+        .attr("transform", "translate(0," + this.size + ")");
     this.xAxis
         .call(d3.axisBottom(this.xScale));
 
@@ -117,11 +115,11 @@ export class LineChartComponent implements OnInit, OnChanges {
     return [ Math.min(pairA[0], pairB[0]), Math.max(pairA[1], pairB[1]) ];
   }
 
-  private extent(data: number[][][], theThing: (series: number[][]) => [number, number]): [number, number] {
-    return data.map(theThing).reduce((extentA, extentB, i, extents) => this.envelope(extentA, extentB))
+  private extent(data: number[][][], listOfSeries: (series: number[][]) => [number, number]): [number, number] {
+    return data.map(listOfSeries).reduce((extentA, extentB, i, extents) => this.envelope(extentA, extentB))
   }
 
-  private getAxisExtents(): { x: [number, number], y: [number, number]} {
+  private getAxisScales(): { x: [number, number], y: [number, number] } {
     if (this.axisExtents === 'equalAxes') {
       return this.equalAxes();
     } else if (this.axisExtents === 'simpleAxes') {
@@ -132,9 +130,11 @@ export class LineChartComponent implements OnInit, OnChanges {
   }
 
   updateChart() {
-    let extents = this.getAxisExtents();
-    this.xScale.domain(extents.x);
-    this.yScale.domain(extents.y);
+    let extentX = this.extent(this.data, series => d3.extent(series, d => d[0] as number));
+    let extentY = this.extent(this.data, series => d3.extent(series, d => d[1] as number));
+    this.xScale.domain(extentX);
+    this.yScale.domain(extentY);
+
     this.xAxis.transition().call(d3.axisBottom(this.xScale));
     this.yAxis.transition().call(d3.axisLeft(this.yScale));
 

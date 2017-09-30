@@ -1,4 +1,3 @@
-<!-- ngDraggable --> 
 <div xplorioDrag
   [handle]="Header"
   (started)="startedDragging()"
@@ -10,7 +9,7 @@
 >
     <div #Header style="border-style: solid; border-color: lightblue; border-width: 2px; background-color: white">
       <button (click)="delete()">x</button>
-      <h2>Chart #{{index}}</h2> <!-- todo: make this element also a drag handle -->
+      <h2>Chart #{{index}}</h2>
     </div>
-    <div class="d3-chart" #lineChart width="400" height="400"></div>  
+    <div class="d3-chart" #lineChart></div>  
 </div>

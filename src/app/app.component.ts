@@ -43,6 +43,7 @@ export class AppComponent implements OnInit {
         console.error('error on get chart data: ' + error);
         return Observable.of([]);
       });
+    this.newChart();
   }
 
   newChart() {
