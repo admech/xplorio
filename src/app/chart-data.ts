@@ -39,7 +39,8 @@ export class ChartDataEntry {
   constructor(
     private _index: number,
     private _data: any[],
-    private position: ChartDataEntryPosition
+    private position: ChartDataEntryPosition,
+    private _axes: { x: string, y: string }
   ) { }
 
   index() {
@@ -75,6 +76,10 @@ export class ChartDataEntry {
   setTop(top: number) {
     console.log('Changing entry #' + this._index + ' top from ' + this.position.top + ' to ' + top);
     this.position.top = top;
+  }
+
+  axes() {
+    return this._axes;
   }
 
 }

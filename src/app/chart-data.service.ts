@@ -40,7 +40,8 @@ export class ChartDataService {
           this.data.set(index, new ChartDataEntry(
             index, 
             SERIES, 
-            new ChartDataEntryPosition(250, 250, 99999)
+            new ChartDataEntryPosition(250, 250, 99999),
+            { x: 'x', y: 'y'}
           ));
           resolve(index);
         },

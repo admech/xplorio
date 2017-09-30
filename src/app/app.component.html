@@ -11,17 +11,19 @@
 
       [data]="entry.data()" 
       [axisScales]="'equalAxes'"
+      [axisNames]="entry.axes()"
+
       (deleteChart)="deleteChart($event)"
       (startedDrag)="bringToFront($event)"
     ></app-line-chart>
   </div>
   <!-- 
     TO DO:
-    4) add axis names
-    5) make lines colored as per spectrum
     6) add legend and series names and chart name
     7) make series and legend highlight on hover if more than one
-    8) make the control that you draw on and it regulates lines' opacity
+    8) make axes labels show proper values, not 0..1
+    9) make the control that you draw on and it regulates lines' opacity
+    10) make a switch equal vs simple axes
     nice to have:
       1) make it show mouse cursor x and y values on the axes
       2) make it show dotted lines from those points on axes to the cursor

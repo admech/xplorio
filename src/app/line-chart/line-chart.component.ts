@@ -24,6 +24,8 @@ export class LineChartComponent implements OnInit, OnChanges {
 
   @Input() private data: Array<any>;
   @Input() private axisScales: string;
+  @Input() private axisNames: { x: string, y: string };
+
   @Output() deleteChart = new EventEmitter<number>();
   @Output() stoppedDrag = new EventEmitter<number>();
   @Output() startedDrag = new EventEmitter<number>();
@@ -104,21 +106,31 @@ export class LineChartComponent implements OnInit, OnChanges {
         .y(d => this.yScale(d[1]))
         .curve(d3.curveBasis);
 
+    this.colors = d3.scaleLinear()
+      .domain([0, this.data.length])
+      .range(<any[]>['blue', 'red']);
+
     this.xAxis = this.chart.append("g")
         .attr("transform", "translate(0," + this.scales.minY + ")");
     this.xAxis
         .call(d3.axisBottom(this.xScale));
+    this.xAxis
+        .append("text")
+        .attr("fill", "#000")
+        .attr("x", this.scales.maxX + 6)
+        .attr("dx", "0.71em")
+        .attr("text-anchor", "end")
+        .text(this.axisNames.x);
 
     this.yAxis = this.chart.append("g")
         .call(d3.axisLeft(this.yScale));
     this.yAxis
         .append("text")
         .attr("fill", "#000")
-        .attr("transform", "rotate(-90)")
-        .attr("y", 6)
-        .attr("dy", "0.71em")
+        .attr("x", 6)
+        .attr("dx", "0.71em")
         .attr("text-anchor", "end")
-        .text("Price ($)");
+        .text(this.axisNames.y);
   }
 
   private envelope(pairA: [number, number], pairB: [number, number]): [number, number] {
@@ -152,6 +164,8 @@ export class LineChartComponent implements OnInit, OnChanges {
     this.xScale.domain(extentX);
     this.yScale.domain(extentY);
 
+    this.colors.domain([0, this.data.length]);
+
     // this.xAxis.transition().call(d3.axisBottom(this.xScale));
     // this.yAxis.transition().call(d3.axisLeft(this.yScale));
 
@@ -162,7 +176,8 @@ export class LineChartComponent implements OnInit, OnChanges {
           .datum(this.data[i])
           .attr('class', 'chartLine')
           .attr("fill", "none")
-          .attr("stroke", "steelblue")
+          .attr("stroke", this.colors(i))
+          // .style('stroke', (d, i) => this.colors(i))
           .attr("stroke-linejoin", "round")
           .attr("stroke-linecap", "round")
           .attr("stroke-width", 1.5)
