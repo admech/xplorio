@@ -8,29 +8,27 @@ import { AngularDraggableDirective } from './drag/drag.directive';
 export * from './drag/drag.directive';
 
 import { AppComponent } from './app.component';
-import { PlotComponent } from './plot.component';
-import { DataService } from './data.service';
 import { BarChartComponent } from './bar-chart/bar-chart.component';
 import { LineChartComponent } from './line-chart/line-chart.component';
 
 import { ChartDataService } from './chart-data.service';
+import { SolutionService } from './solution.service';
+
 
 @NgModule({
   imports: [
     BrowserModule
-    // , AngularDraggableModule
     , NgResizableModule
   ],
   declarations: [
     AppComponent
-    , PlotComponent
     , BarChartComponent
     , LineChartComponent
     , AngularDraggableDirective
   ],
   providers: [
-    DataService,
-    ChartDataService
+    ChartDataService,
+    SolutionService
   ],
   exports: [
     AngularDraggableDirective

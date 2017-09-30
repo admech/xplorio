@@ -23,8 +23,6 @@ export class LineChartComponent implements OnInit, OnChanges {
 
   @Input() private name: string;
 
-  @Input() private left: number;
-  @Input() private top: number;
   @Input() private indexOfZ: Observable<number>;
 
   @Input() private data: Array<any>;

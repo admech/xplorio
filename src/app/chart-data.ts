@@ -33,15 +33,18 @@ export class ChartData {
 }
 
 export class ChartDataEntry {
+  private _zIndex: Updatable<number>;
 
   constructor(
     private _index: number,
     private _name: string,
     private _data: any[],
     private seriesNames: string[],
-    private position: ChartDataEntryPosition,
+    private initialZIndex: number,
     private _axes: ChartAxes
-  ) { }
+  ) {
+    this._zIndex = new Updatable(initialZIndex);
+  }
 
   index() {
     return this._index;
@@ -56,55 +59,16 @@ export class ChartDataEntry {
   }
 
   zIndex() {
-    return this.position.getZIndex();
+    return this._zIndex.get();
   }
 
   setZIndex(zIndex: number) {
-    console.log('Changing entry #' + this._index + ' zIndex from ' + this.position.getZIndex().last() + ' to ' + zIndex);
-    this.position.setZIndex(zIndex);
-  }
-
-  left() {
-    return this.position.left;
-  }
-
-  setLeft(left: number) {
-    console.log('Changing entry #' + this._index + ' left from ' + this.position.left + ' to ' + left);
-    this.position.left = left;
-  }
-
-  top() {
-    return this.position.top;
-  }
-
-  setTop(top: number) {
-    console.log('Changing entry #' + this._index + ' top from ' + this.position.top + ' to ' + top);
-    this.position.top = top;
+    console.log('Changing entry #' + this._index + ' zIndex from ' + this._zIndex.get().last() + ' to ' + zIndex);
+    this._zIndex.set(zIndex);
   }
 
   axes() {
     return this._axes;
-  }
-
-}
-
-export class ChartDataEntryPosition {
-  private zIndex: Updatable<number>;
-
-  constructor(
-    public left: number | null,
-    public top: number | null,
-    private initialZIndex: number
-  ) {
-    this.zIndex = new Updatable(initialZIndex);
-  }
-
-  getZIndex() {
-    return this.zIndex.get();
-  }
-
-  setZIndex(nextZIndex: number) {
-    this.zIndex.set(nextZIndex);
   }
 
 }

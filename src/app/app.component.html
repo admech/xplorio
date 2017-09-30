@@ -7,8 +7,6 @@
 
       [name]="entry.name()"
 
-      [left]="entry.left()"
-      [top]="entry.top()"
       [indexOfZ]="entry.zIndex()"
 
       [data]="entry.data()" 
@@ -19,11 +17,10 @@
       (deleteChart)="deleteChart($event)"
       (startedDrag)="bringToFront($event)"
     ></app-line-chart>
-    <!-- [axesScale]="entry.axes().scale.get() | async" -->
   </div>
   <!-- 
     TO DO:
-    9) make the control that you draw on and it regulates lines' opacity
+    10) make data for the new chart selectable
     nice to have:
       1) make it show mouse cursor x and y values on the axes
       2) make it show dotted lines from those points on axes to the cursor
@@ -33,5 +30,6 @@
       6) make the equal vs simple axes switch work async (and from 1st click)
       7) remove the type alias export warning
       8) make series and legend highlight on hover if more than one
+      9) make the control that you draw on and it regulates lines' opacity
   -->
 </div>
