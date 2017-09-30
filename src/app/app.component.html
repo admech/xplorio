@@ -7,18 +7,18 @@
 
       [left]="entry.left()"
       [top]="entry.top()"
-      [zIndex]="entry.zIndex()"
+      [indexOfZ]="entry.zIndex()"
 
       [data]="entry.data()" 
       [axisExtents]="'equalAxes'"
       (deleteChart)="deleteChart($event)"
-      (stoppedDrag)="bringToFront($event)"
+      (startedDrag)="bringToFront($event)"
     ></app-line-chart>
   </div>
   <!-- 
     TO DO:
-    2*) make dragging not blink
-    2**) make stopDrag keep order of the other charts' z-indices and z-indices to preserve when mouse leaves browser window
+    2*) make stopDrag keep order of the other charts' z-indices and z-indices to preserve when mouse leaves browser window
+    2**) make dragging not blink
     3) make equal axes fit the data
     4) add axis names
     5) make lines colored as per spectrum

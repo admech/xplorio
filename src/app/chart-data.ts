@@ -1,3 +1,10 @@
+import { Observable } from 'rxjs/Observable';
+import { Subject } from 'rxjs/Subject';
+import 'rxjs/add/operator/switchMap';
+import 'rxjs/add/operator/catch';
+import 'rxjs/add/operator/last';
+import 'rxjs/add/observable/of';
+
 export class ChartData {
 
   private data = new Map<number, ChartDataEntry>();
@@ -44,12 +51,12 @@ export class ChartDataEntry {
   }
 
   zIndex() {
-    return this.position.zIndex;
+    return this.position.getZIndex();
   }
 
   setZIndex(zIndex: number) {
-    console.log('Changing entry #' + this._index + ' zIndex from ' + this.position.zIndex + ' to ' + zIndex);
-    this.position.zIndex = zIndex;
+    console.log('Changing entry #' + this._index + ' zIndex from ' + this.position.getZIndex().last() + ' to ' + zIndex);
+    this.position.setZIndex(zIndex);
   }
 
   left() {
@@ -73,10 +80,25 @@ export class ChartDataEntry {
 }
 
 export class ChartDataEntryPosition {
+  private zIndexSubject = new Subject<number>();
+  private zIndex = this.zIndexSubject
+      .switchMap(nextZIndex => Observable.of(nextZIndex));
+
   constructor(
     public left: number | null,
     public top: number | null,
-    public zIndex: number
-  ) {}
+    private initialZIndex: number
+  ) {
+    this.setZIndex(this.initialZIndex);
+  }
+
+  getZIndex() {
+    return this.zIndex;
+  }
+
+  setZIndex(nextZIndex: number) {
+    this.zIndexSubject.next(nextZIndex);
+  }
+
 }
 

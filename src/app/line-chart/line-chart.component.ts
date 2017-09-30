@@ -6,6 +6,8 @@ import { Component, OnInit, OnChanges, EventEmitter, ViewChild, ElementRef, Inpu
 import * as d3 from 'd3';
 import { ScaleLinear, Line } from 'd3';
 
+import { Observable } from 'rxjs/Observable';
+
 @Component({
   selector: 'app-line-chart',
   templateUrl: './line-chart.component.html',
@@ -18,7 +20,7 @@ export class LineChartComponent implements OnInit, OnChanges {
 
   @Input() private left: number;
   @Input() private top: number;
-  @Input() private zIndex: number;
+  @Input() private indexOfZ: Observable<number>;
 
   @Input() private data: Array<any>;
   @Input() private axisExtents: string;

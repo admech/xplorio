@@ -33,16 +33,16 @@ export class ChartDataService {
     return Promise.reject(error.message || error);
   }
 
-  create(): Promise<boolean> {
+  create(): Promise<number> {
     console.log('creating a new chart');
     return new Promise((resolve, reject) => setTimeout(() => {
           let index = this.count++;
           this.data.set(index, new ChartDataEntry(
             index, 
             SERIES, 
-            new ChartDataEntryPosition(250, 250, this.incrementAndGetMaxZIndex())
+            new ChartDataEntryPosition(250, 250, 99999)
           ));
-          resolve(true);
+          resolve(index);
         },
         50
       ))

@@ -3,7 +3,6 @@ import { Component, OnInit } from '@angular/core';
 import * as d3 from 'd3';
 
 import { Observable } from 'rxjs/Observable';
-import { Subscription } from 'rxjs/Subscription';
 import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/operator/catch';
@@ -49,13 +48,10 @@ export class AppComponent implements OnInit {
   newChart() {
     console.log('creating a new chart');
     this.chartDataService.create()
-      .then(created => {
-        if (created) {
-          console.log('created.');
-          this.lineChartDataSubject.next();
-        } else {
-          console.error('could not create chart');
-        }
+      .then(index => {
+        console.log('created.');
+        this.lineChartDataSubject.next();
+        this.chartDataService.bringToFront(index);
       });
   }
 
