@@ -85,10 +85,14 @@ export class LineChartComponent implements OnInit, OnChanges {
     this.chart = svg.append("g")
       .attr("transform", "translate(" + this.margin.left + "," + this.margin.top + ")");
 
+    let extentX = this.extent(this.data, series => d3.extent(series, d => d[0] as number));
+    let extentY = this.extent(this.data, series => d3.extent(series, d => d[1] as number));
     this.scales = this.getAxisScales(this.width, this.height);
     this.xScale = d3.scaleLinear()
+        .domain(extentX)
         .rangeRound([0, this.scales.maxX]);
     this.yScale = d3.scaleLinear()
+        .domain(extentY)
         .rangeRound([this.scales.minY, 0]);
     this.line = d3.line()
         .x(d => this.xScale(d[0]))
@@ -126,8 +130,8 @@ export class LineChartComponent implements OnInit, OnChanges {
     return [ Math.min(pairA[0], pairB[0]), Math.max(pairA[1], pairB[1]) ];
   }
 
-  private extent(data: number[][][], listOfSeries: (series: number[][]) => [number, number]): [number, number] {
-    return data.map(listOfSeries).reduce((extentA, extentB, i, extents) => this.envelope(extentA, extentB))
+  private extent(data: number[][][], extentOfASeries: (series: number[][]) => [number, number]): [number, number] {
+    return data.map(extentOfASeries).reduce((extentA, extentB, i, extents) => this.envelope(extentA, extentB))
   }
 
   private getAxisScales(width: number, height: number): { maxX: number, minY: number } {
