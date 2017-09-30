@@ -1,23 +1,6 @@
 <div>
   <h1>Xplorio</h1>
-  <div *ngIf="lineChartData">
-    <button (click)="newChart()">New</button>
-    <app-line-chart *ngFor="let entry of lineChartData | async" 
-      [index]="entry.index()"
-
-      [name]="entry.name()"
-
-      [indexOfZ]="entry.zIndex()"
-
-      [data]="entry.data()" 
-      [axes]="entry.axes()"
-      [axesScale]="entry.axes().scale"
-      [seriesNames]="entry.seriesNames"
-
-      (deleteChart)="deleteChart($event)"
-      (startedDrag)="bringToFront($event)"
-    ></app-line-chart>
-  </div>
+  <charting-area></charting-area>
   <!-- 
     TO DO:
     10) make data for the new chart selectable
